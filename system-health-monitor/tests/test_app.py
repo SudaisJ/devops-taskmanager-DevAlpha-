@@ -1,9 +1,11 @@
 import sys
 import os
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "app"))
 
-import pytest
-from app import app as flask_app
+import pytest  # noqa: E402
+from app import app as flask_app  # noqa: E402
+
 
 @pytest.fixture
 def client():
@@ -11,14 +13,17 @@ def client():
     with flask_app.test_client() as client:
         yield client
 
+
 def test_health(client):
     resp = client.get("/health")
     assert resp.status_code == 200
     assert resp.get_json()["status"] == "ok"
 
+
 def test_index_loads(client):
     resp = client.get("/")
     assert resp.status_code == 200
+
 
 def test_stats_returns_json(client):
     resp = client.get("/api/stats")

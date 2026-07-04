@@ -1,0 +1,112 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background: #0B1E33;
+    color: #C7D9E5;
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.container { max-width: 1100px; margin: 0 auto; }
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #1C7293;
+}
+
+header h1 { font-size: 1.8rem; color: #ffffff; }
+
+.status { display: flex; align-items: center; gap: 0.5rem; }
+
+.dot {
+    width: 10px; height: 10px;
+    background: #3FD9C7;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.card {
+    background: #132A45;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #1C7293;
+}
+
+.card h2 {
+    font-size: 0.9rem;
+    color: #1C7293;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+.gauge {
+    background: #0B1E33;
+    border-radius: 999px;
+    height: 8px;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+}
+
+.gauge-bar {
+    height: 100%;
+    border-radius: 999px;
+    width: 0%;
+    transition: width 0.5s ease, background 0.5s ease;
+    background: #3FD9C7;
+}
+
+.value { font-size: 2rem; font-weight: bold; color: #ffffff; }
+.sub { font-size: 0.8rem; color: #5B6B7A; margin-top: 0.25rem; }
+
+.net-stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #0B1E33;
+    font-size: 0.95rem;
+}
+
+.net-stat span:last-child { color: #3FD9C7; font-weight: bold; }
+
+.processes { margin-top: 0; }
+
+table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+
+th {
+    text-align: left;
+    font-size: 0.8rem;
+    color: #1C7293;
+    text-transform: uppercase;
+    padding: 0.5rem;
+    border-bottom: 1px solid #0B1E33;
+}
+
+td { padding: 0.6rem 0.5rem; font-size: 0.9rem; border-bottom: 1px solid #0B1E33; }
+
+.badge {
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.badge.running { background: #1C8A5F22; color: #3FD9C7; }
+.badge.sleeping { background: #1C729322; color: #1C7293; }

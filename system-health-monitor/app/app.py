@@ -4,9 +4,11 @@ import datetime
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def index():
     return render_template("index.html")
+
 
 @app.route("/api/stats")
 def stats():
@@ -15,8 +17,11 @@ def stats():
     disk = psutil.disk_usage("/")
     net = psutil.net_io_counters()
     processes = []
-    for p in sorted(psutil.process_iter(["pid", "name", "cpu_percent", "memory_percent", "status"]),
-                    key=lambda x: x.info["cpu_percent"] or 0, reverse=True)[:8]:
+    for p in sorted(
+        psutil.process_iter(["pid", "name", "cpu_percent", "memory_percent", "status"]),
+        key=lambda x: x.info["cpu_percent"] or 0,
+        reverse=True
+    )[:8]:
         processes.append(p.info)
     return jsonify({
         "timestamp": datetime.datetime.now().strftime("%H:%M:%S"),
@@ -41,9 +46,11 @@ def stats():
         "processes": processes
     })
 
+
 @app.route("/health")
 def health():
     return jsonify(status="ok"), 200
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=False)

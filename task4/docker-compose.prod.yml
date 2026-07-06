@@ -1,0 +1,24 @@
+services:
+  system-health-monitor:
+    image: sudaisj/system-health-monitor:latest
+    container_name: health-monitor
+    restart: unless-stopped
+    expose:
+      - "5000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: health-monitor-proxy
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      system-health-monitor:
+        condition: service_healthy

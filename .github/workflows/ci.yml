@@ -33,3 +33,45 @@ jobs:
         run: pip install -r system-health-monitor/requirements.txt
       - name: Run pytest
         run: pytest system-health-monitor/tests/ -v
+
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t system-health-monitor:latest system-health-monitor/
+
+  push:
+    name: Push to Docker Hub
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./system-health-monitor
+          push: true
+          tags: |
+            sudaisj/system-health-monitor:latest
+            sudaisj/system-health-monitor:${{ github.sha }}
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: push
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy notification
+        run: |
+          echo "Image sudaisj/system-health-monitor:${{ github.sha }}"
+          echo "Deploy with: docker compose -f docker-compose.prod.yml up -d"
+          echo "Ready for production deployment"
